@@ -1,34 +1,22 @@
-#include <iostream>
-#include <thread>
-#include <chrono>
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QQmlContext>
 #include "despertador.h"
+#include <QQmlComponent>
 
-int main() {
-    Despertador reloj;
-    
-    // Se configura la alarma para que suene 2 minutos después de la hora actual
-    auto ahora = std::chrono::system_clock::now();
-    time_t tiempoActual = std::chrono::system_clock::to_time_t(ahora);
-    tm *tiempoLocal = localtime(&tiempoActual);
-    int minutoAlarma = (tiempoLocal->tm_min + 2) % 60;
-    int horaAlarma = tiempoLocal->tm_hour + (tiempoLocal->tm_min + 2) / 60;
-    horaAlarma %= 24;
+int main(int argc, char *argv[]) {
+    QGuiApplication app(argc, argv);
 
-    reloj.configurarAlarma(horaAlarma, minutoAlarma);
-    reloj.cambiarEstadoAlarma();
+    // Registrar el tipo Despertador para QML
+    qmlRegisterType<Despertador>("Despertador", 1, 0, "Despertador");
 
-    std::cout << "Reloj iniciado. Alarma establecida para las " << reloj.obtenerHoraAlarma() << std::endl;
+    QQmlApplicationEngine engine;
 
-    while (true) {
-        std::cout << "Hora actual: " << reloj.obtenerHoraActual() << "\r" << std::flush;
-        
-        if (reloj.esHoraAlarma()) {
-            std::cout << std::endl << "¡ALARMA!" << std::endl;
-            break;
-        }
+    // Cargar el archivo QML
+    engine.load(QUrl(QStringLiteral("qrc:/Screen01.ui.qml")));
 
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
+    if (engine.rootObjects().isEmpty())
+        return -1;
 
-    return 0;
+    return app.exec();
 }
