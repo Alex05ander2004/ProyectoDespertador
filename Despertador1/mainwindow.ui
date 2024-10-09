@@ -30,7 +30,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QPushButton" name="alarmsButton">
@@ -57,7 +57,7 @@
        <rect>
         <x>50</x>
         <y>330</y>
-        <width>91</width>
+        <width>261</width>
         <height>61</height>
        </rect>
       </property>
@@ -162,6 +162,12 @@
         <width>651</width>
         <height>301</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Perpetua</family>
+        <pointsize>36</pointsize>
+       </font>
       </property>
      </widget>
      <widget class="QPushButton" name="addAlarmButton">

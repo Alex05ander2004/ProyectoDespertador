@@ -25,11 +25,13 @@ private slots:
     void addAlarm();            // Añadir una nueva alarma
     void goToClockScreen();     // Volver a la pantalla del reloj
     void goToAlarmScreen();     // Volver a la pantalla del reloj
+    void ReturnToAlarmsScreen();     // Volver a la pantalla de alarmas
 
 private:
     Ui::MainWindow *ui;
     QTime alarmTime;          //Almacena la hora de la alarma
     bool alarmSet;            //Estado de alarma
     QList<QTime> alarms;      // Lista de alarmas
+
 };
 #endif // MAINWINDOW_H

@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     QTimer *timer=new QTimer(this);
 
     connect(timer , SIGNAL(timeout()),this,SLOT(showTime()));
+    connect(timer, SIGNAL(timeout()), this, SLOT(checkAlarm()));  // Ejecutar checkAlarm periódicamente
     timer->start();
 
     QDateTime dateTime=QDateTime::currentDateTime();
@@ -22,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     timer->start();
 
     // Conectar el botón "Ver Alarmas" con la función para cambiar a la pantalla de alarmas
-    connect(ui->alarmsButton, &QPushButton::clicked, this, &MainWindow::goToAlarmsScreen);
+    connect(ui->alarmsButton, &QPushButton::clicked, this, &MainWindow::ReturnToAlarmsScreen);
 
     // Conectar el botón "+" (añadir alarma) para ir a la pantalla de agregar alarma
     connect(ui->addAlarmButton, &QPushButton::clicked, this, &MainWindow::goToAddAlarmScreen);
@@ -42,20 +43,27 @@ MainWindow::MainWindow(QWidget *parent)
 void MainWindow::showTime()
 {
     QTime time = QTime::currentTime();
-    QString time_text = time.toString("hh : mm : ss");
+    QString time_text = time.toString("hh : mm");
     ui->Digital_clock->setText(time_text);
+
 }
 
 void MainWindow::checkAlarm()
 {
     QTime currentTime = QTime::currentTime();
     for (QTime alarm : alarms) {
-        if (alarm == currentTime) {
+        if (alarm.hour() == currentTime.hour() && alarm.minute() == currentTime.minute()) {
             QMessageBox::information(this, "Alarma", "¡Es hora de una alarma!");
             alarms.removeOne(alarm);
             break;
         }
     }
+}
+
+void MainWindow::ReturnToAlarmsScreen()
+{
+    ui->stackedWidget->setCurrentIndex(2);  // Cambia a la pantalla de alarmas
+
 }
 
 void MainWindow::goToAlarmsScreen()
@@ -64,7 +72,7 @@ void MainWindow::goToAlarmsScreen()
 
     // Mostrar las alarmas que ya están configuradas
     for (QTime alarm : alarms) {
-        ui->alarmListWidget->addItem(alarm.toString("hh:mm:ss"));
+        ui->alarmListWidget->addItem(alarm.toString("hh:mm"));
     }
 }
 
@@ -84,7 +92,7 @@ void MainWindow::addAlarm()
 
 void MainWindow::goToAlarmScreen()
 {
-    ui->stackedWidget->setCurrentIndex(2);  // Volver a la alarma(alarmas)
+    ui->stackedWidget->setCurrentIndex(2);  // Volver a la pantalla de alarma
 }
 
 void MainWindow::goToClockScreen()
