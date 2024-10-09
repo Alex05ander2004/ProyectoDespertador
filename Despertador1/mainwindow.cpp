@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     QString datetimetext=dateTime.toString();
     ui->DateTime_->setText(datetimetext);
     // Actualizar la hora cada segundo
-    connect(timer, SIGNAL(timeout()), this, SLOT(showTime()));
+    connect(timer, SIGNAL(timeout()), this, SLOT(updateDateTime()));  // Actualizar la fecha y hora
     timer->start();
 
     // Conectar el botón "Ver Alarmas" con la función para cambiar a la pantalla de alarmas
@@ -43,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent)
 void MainWindow::showTime()
 {
     QTime time = QTime::currentTime();
-    QString time_text = time.toString("hh : mm");
+    QString time_text = time.toString("hh : mm : ss");
     ui->Digital_clock->setText(time_text);
 
 }
@@ -88,6 +88,13 @@ void MainWindow::addAlarm()
 
     // Volver a la pantalla de alarmas y actualizar la lista
     goToAlarmsScreen();
+}
+
+void MainWindow::updateDateTime()
+{
+    QDateTime dateTime = QDateTime::currentDateTime();
+    QString datetimetext = dateTime.toString("yyyy-MM-dd hh:mm:ss");  // Puedes personalizar el formato si lo deseas
+    ui->DateTime_->setText(datetimetext);  // Actualizar el widget con la nueva fecha y hora
 }
 
 void MainWindow::goToAlarmScreen()

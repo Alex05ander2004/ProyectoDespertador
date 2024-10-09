@@ -26,6 +26,7 @@ private slots:
     void goToClockScreen();     // Volver a la pantalla del reloj
     void goToAlarmScreen();     // Volver a la pantalla del reloj
     void ReturnToAlarmsScreen();     // Volver a la pantalla de alarmas
+    void updateDateTime();  // Nueva función para actualizar la fecha y hora
 
 private:
     Ui::MainWindow *ui;
